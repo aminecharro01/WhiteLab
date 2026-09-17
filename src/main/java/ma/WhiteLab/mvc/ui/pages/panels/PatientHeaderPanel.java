@@ -21,15 +21,13 @@ public class PatientHeaderPanel extends JPanel {
     private static final Font VALUE_FONT  = new Font("Segoe UI", Font.PLAIN, 13);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private static final Color PRIMARY   = new Color(64, 120, 255);
+    private static final Color PRIMARY   = new Color(0x0E, 0xA5, 0xA5);
     private static final Color LIGHT_BG  = new Color(245, 247, 250);
     private static final Color TEXT_DARK = new Color(40, 40, 40);
     private static final Color TEXT_GRAY = new Color(90, 90, 90);
 
     // Tailles beaucoup plus raisonnables
     private static final int PHOTO_SIZE          = 120;   // ← réduit de 140 → 120
-    private static final int DENTAL_CHART_WIDTH  = 250;   // ← plus étroit
-    private static final int DENTAL_CHART_HEIGHT = 230;   // ← hauteur très limitée
 
     public PatientHeaderPanel(Patient patient) {
         setLayout(new BorderLayout(15, 0));           // espacement horizontal réduit
@@ -44,13 +42,8 @@ public class PatientHeaderPanel extends JPanel {
         photo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
         add(photo, BorderLayout.WEST);
 
-        // Bloc central : nom + infos
+        // Bloc central : nom + infos (l'odontogramme complet est dans son propre onglet)
         add(createDetailsPanel(patient), BorderLayout.CENTER);
-
-        // Schéma dentaire à droite (compact)
-        DentalChartPanel chart = new DentalChartPanel();
-        chart.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
-        add(chart, BorderLayout.EAST);
     }
 
     private JPanel createDetailsPanel(Patient patient) {
@@ -173,60 +166,4 @@ public class PatientHeaderPanel extends JPanel {
         }
     }
 
-    // Schéma dentaire – compact et proportionnel
-    private static class DentalChartPanel extends JPanel {
-        private Image chartImage;
-
-        public DentalChartPanel() {
-            setPreferredSize(new Dimension(DENTAL_CHART_WIDTH, DENTAL_CHART_HEIGHT));
-            setMaximumSize(new Dimension(DENTAL_CHART_WIDTH, DENTAL_CHART_HEIGHT));
-            setOpaque(false);
-
-            String path = "/static/icons/dent.png";
-
-            try {
-                URL url = getClass().getResource(path);
-                if (url != null) {
-                    chartImage = new ImageIcon(url).getImage();
-                }
-            } catch (Exception e) {
-                System.err.println("Erreur chargement dent.png : " + e.getMessage());
-            }
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
-            if (chartImage != null) {
-                // Centrage + respect des proportions
-                int imgW = chartImage.getWidth(null);
-                int imgH = chartImage.getHeight(null);
-                double ratio = Math.min((double) getWidth() / imgW, (double) getHeight() / imgH);
-
-                int drawW = (int) (imgW * ratio);
-                int drawH = (int) (imgH * ratio);
-                int x = (getWidth() - drawW) / 2;
-                int y = (getHeight() - drawH) / 2;
-
-                g2.drawImage(chartImage, x, y, drawW, drawH, this);
-            } else {
-                g2.setColor(new Color(245, 245, 245));
-                g2.fillRoundRect(4, 4, getWidth() - 8, getHeight() - 8, 10, 10);
-                g2.setColor(Color.GRAY.darker());
-                g2.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-                g2.drawString("Schéma dentaire", 12, getHeight() / 2 - 6);
-            }
-
-            // Bordure très légère
-            g2.setColor(PRIMARY.brighter());
-            g2.setStroke(new BasicStroke(1f));
-            g2.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 10, 10);
-
-            g2.dispose();
-        }
-    }
 }

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SituationFinancierePanel extends JPanel {
 
-    private static final Color PRIMARY = new Color(64, 120, 255); // Bleu unifié
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5); // Bleu unifié
     private static final Color SUCCESS = new Color(40, 167, 69);
     private static final Color DANGER = new Color(220, 53, 69);
     private static final Color LIGHT_BG = new Color(245, 247, 250);
@@ -120,7 +120,8 @@ public class SituationFinancierePanel extends JPanel {
         cm.getColumn(5).setPreferredWidth(120);
         cm.getColumn(6).setPreferredWidth(140);
 
-        cm.getColumn(6).setCellRenderer(new ActionsRenderer());
+        ActionsRenderer actionsRenderer = new ActionsRenderer();
+        cm.getColumn(6).setCellRenderer(actionsRenderer);
 
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -133,13 +134,17 @@ public class SituationFinancierePanel extends JPanel {
                 if (id == null) return;
 
                 Rectangle cell = table.getCellRect(row, col, true);
+                actionsRenderer.setSize(cell.width, cell.height);
+                actionsRenderer.doLayout();
                 int relX = e.getPoint().x - cell.x;
+                int relY = e.getPoint().y - cell.y;
+                Component clicked = actionsRenderer.getComponentAt(relX, relY);
 
-                if (relX >= 10 && relX <= 50) {
+                if (clicked == actionsRenderer.btnView) {
                     consultSF(id);
-                } else if (relX >= 60 && relX <= 100) {
+                } else if (clicked == actionsRenderer.btnEdit) {
                     editSF(id);
-                } else if (relX >= 110 && relX <= 150) {
+                } else if (clicked == actionsRenderer.btnDelete) {
                     deleteSF(id, row);
                 }
             }

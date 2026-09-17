@@ -20,7 +20,7 @@ import java.util.List;
 public class CertificatsPanel extends JPanel {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Color SUCCESS = new Color(40, 167, 69);
     private static final Color DANGER = new Color(220, 53, 69);
     private static final Color LIGHT_GRAY = new Color(245, 247, 250);
@@ -94,7 +94,8 @@ public class CertificatsPanel extends JPanel {
         cm.getColumn(2).setPreferredWidth(160);
         cm.getColumn(3).setPreferredWidth(180);
 
-        cm.getColumn(3).setCellRenderer(new ActionsColumnRenderer());
+        ActionsColumnRenderer actionsRenderer = new ActionsColumnRenderer();
+        cm.getColumn(3).setCellRenderer(actionsRenderer);
 
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -108,13 +109,17 @@ public class CertificatsPanel extends JPanel {
                 if (!(hidden instanceof CertificatDTO dto)) return;
 
                 Rectangle cellRect = table.getCellRect(row, col, true);
+                actionsRenderer.setSize(cellRect.width, cellRect.height);
+                actionsRenderer.doLayout();
                 int relX = e.getPoint().x - cellRect.x;
+                int relY = e.getPoint().y - cellRect.y;
+                Component clicked = actionsRenderer.getComponentAt(relX, relY);
 
-                if (relX >= 10 && relX <= 50) {
+                if (clicked == actionsRenderer.btnView) {
                     showDetails(dto);
-                } else if (relX >= 60 && relX <= 100) {
+                } else if (clicked == actionsRenderer.btnEdit) {
                     editCertificat(dto);
-                } else if (relX >= 110 && relX <= 150) {
+                } else if (clicked == actionsRenderer.btnDelete) {
                     deleteCertificat(dto, modelRow);
                 }
             }

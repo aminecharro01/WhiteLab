@@ -4,6 +4,7 @@ import ma.WhiteLab.conf.ApplicationContext;
 import ma.WhiteLab.mvc.dto.auth.UserPrincipal;
 import ma.WhiteLab.mvc.dto.profileDtos.ProfileData;
 import ma.WhiteLab.mvc.ui.pages.pagesNames.ApplicationPages;
+import ma.WhiteLab.mvc.ui.palette.charts.SimpleChart;
 import ma.WhiteLab.service.modules.dashboard_statistiques.api.DashboardService;
 import ma.WhiteLab.service.modules.dashboard_statistiques.dto.DashboardDataDTO;
 import ma.WhiteLab.service.modules.dashboard_statistiques.dto.RendezVousDTO;
@@ -13,7 +14,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class DoctorDashboardPanel extends JPanel {
@@ -52,7 +55,7 @@ public class DoctorDashboardPanel extends JPanel {
         
         JButton statsBtn = new JButton("Mes Statistiques");
         statsBtn.setFont(new Font("Optima", Font.BOLD, 14));
-        statsBtn.setBackground(new Color(64, 120, 255));
+        statsBtn.setBackground(new Color(0x0E, 0xA5, 0xA5));
         statsBtn.setForeground(Color.WHITE);
         statsBtn.setFocusPainted(false);
         statsBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -110,12 +113,25 @@ public class DoctorDashboardPanel extends JPanel {
         cardsPanel.repaint();
 
         detailsPanel.removeAll();
+        detailsPanel.setLayout(new GridLayout(1, 2, 20, 0));
+
+        Map<String, Double> consultations = new LinkedHashMap<>();
+        consultations.put("Jour", (double) data.getNbrConsultationsDuJour());
+        consultations.put("Mois", (double) data.getNbrConsultationsDuMois());
+        consultations.put("Année", (double) data.getNbrConsultationsDeAnnee());
+        SimpleChart chart = new SimpleChart("Consultations", SimpleChart.Type.BAR);
+        chart.setData(consultations);
+        detailsPanel.add(chart);
+
+        JPanel tableWrap = new JPanel(new BorderLayout());
+        tableWrap.setOpaque(false);
         JLabel lbl = new JLabel("Mon Agenda du Jour");
         lbl.setFont(new Font("Optima", Font.BOLD, 18));
         lbl.setBorder(new EmptyBorder(0,0,10,0));
-        detailsPanel.add(lbl, BorderLayout.NORTH);
-        
-        detailsPanel.add(buildRdvTable(data.getRendezVousDuJour()), BorderLayout.CENTER);
+        tableWrap.add(lbl, BorderLayout.NORTH);
+        tableWrap.add(buildRdvTable(data.getRendezVousDuJour()), BorderLayout.CENTER);
+        detailsPanel.add(tableWrap);
+
         detailsPanel.revalidate();
         detailsPanel.repaint();
     }

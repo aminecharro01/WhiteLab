@@ -4,8 +4,38 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 import ma.WhiteLab.conf.ApplicationContext;
+import org.kordamp.ikonli.swing.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
 public class ImageTools {
+
+    /**
+     * Loads an icon either from the Ikonli FontAwesome pack ("ikon:iconName",
+     * e.g. "ikon:TOOTH") in the app's accent color, or falls back to the
+     * legacy PNG resource loader for any other path — kept so existing
+     * non-navigation icon references (alerts, avatars, etc.) still work.
+     */
+    public static ImageIcon loadIcon(String path, int w, int h) {
+        if (path != null && path.startsWith("ikon:")) {
+            return loadIkon(path.substring("ikon:".length()), w, AppTheme.PRIMARY);
+        }
+        var url = ImageTools.class.getResource(path);
+        if (url == null)
+            throw new IllegalArgumentException("Ressource introuvable: " + path);
+        Image img = new ImageIcon(url).getImage()
+                .getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
+    }
+
+    public static ImageIcon loadIkon(String iconName, int size, Color color) {
+        FontIcon icon = FontIcon.of(FontAwesomeSolid.valueOf(iconName), size, color);
+        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = img.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        icon.paintIcon(null, g2, 0, 0);
+        g2.dispose();
+        return new ImageIcon(img);
+    }
 
     public static String[] getEnumNames(Class<? extends Enum<?>> enumClass) {
         Enum<?>[] enumConstants = enumClass.getEnumConstants();
@@ -19,15 +49,6 @@ public class ImageTools {
         }
 
         return names;
-    }
-
-    public static ImageIcon loadIcon(String path, int w, int h) {
-        var url = ImageTools.class.getResource(path);
-        if (url == null)
-            throw new IllegalArgumentException("Ressource introuvable: " + path);
-        Image img = new ImageIcon(url).getImage()
-                .getScaledInstance(w, h, Image.SCALE_SMOOTH);
-        return new ImageIcon(img);
     }
 
     public static ImageIcon resizeImageIcon(ImageIcon originalIcon, int newWidth, int newHeight) {

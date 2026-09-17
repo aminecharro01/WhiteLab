@@ -43,7 +43,7 @@ public class FacturesManagementPanel extends JPanel {
         
         JLabel title = new JLabel("Gestion des Factures");
         title.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        title.setForeground(new Color(64, 120, 255));
+        title.setForeground(new Color(0x0E, 0xA5, 0xA5));
         
         JButton btnBack = new JButton("← Retour");
         btnBack.setFont(new Font("Segoe UI", Font.PLAIN, 14));

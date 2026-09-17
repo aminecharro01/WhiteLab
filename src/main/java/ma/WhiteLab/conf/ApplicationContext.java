@@ -27,6 +27,7 @@ import ma.WhiteLab.repository.modules.cabinet.api.*;
 import ma.WhiteLab.repository.modules.dossierMedical.api.*;
 import ma.WhiteLab.repository.modules.notifications.api.NotificationRepository;
 import ma.WhiteLab.repository.modules.patient.api.AntecedentRepository;
+import ma.WhiteLab.repository.modules.patient.api.DentRepository;
 import ma.WhiteLab.repository.modules.patient.api.PatientRepository;
 import ma.WhiteLab.repository.modules.user.api.*;
 
@@ -58,6 +59,8 @@ import ma.WhiteLab.service.modules.notifications.api.NotificationService;
 import ma.WhiteLab.service.modules.notifications.impl.NotificationServiceImpl;
 import ma.WhiteLab.service.modules.patient.api.AntecedentService;
 import ma.WhiteLab.service.modules.patient.impl.AntecedentServiceImpl;
+import ma.WhiteLab.service.modules.patient.api.DentService;
+import ma.WhiteLab.service.modules.patient.impl.DentServiceImpl;
 import ma.WhiteLab.service.modules.agendas.api.AgendaMensuelService;
 import ma.WhiteLab.service.modules.agendas.impl.AgendaMensuelServiceImpl;
 import ma.WhiteLab.service.modules.agendas.api.RendezVousService;
@@ -93,6 +96,7 @@ public final class ApplicationContext {
     private RepoFactory<MedicamentRepository> medicamentRepoFactory;
     private RepoFactory<ActeMedicalRepository> acteRepoFactory;
     private RepoFactory<AntecedentRepository> antecedentRepoFactory;
+    private RepoFactory<DentRepository> dentRepoFactory;
     private RepoFactory<ConsultationRepository> consultationRepoFactory;
     private RepoFactory<CertificatRepository> certificatRepoFactory;
     private RepoFactory<FactureRepository> factureRepoFactory;
@@ -150,6 +154,7 @@ public final class ApplicationContext {
         medicamentRepoFactory          = buildRepoFactory("medicamentRepo", MedicamentRepository.class);
         acteRepoFactory                = buildRepoFactory("acteRepo", ActeMedicalRepository.class);
         antecedentRepoFactory          = buildRepoFactory("antecedentRepo", AntecedentRepository.class);
+        dentRepoFactory                = buildRepoFactory("dentRepo", DentRepository.class);
         consultationRepoFactory        = buildRepoFactory("consultationRepo", ConsultationRepository.class);
         certificatRepoFactory          = buildRepoFactory("certificatRepo", CertificatRepository.class);
         factureRepoFactory             = buildRepoFactory("factureRepo", FactureRepository.class);
@@ -262,6 +267,8 @@ public final class ApplicationContext {
 
         var antecedentService = new AntecedentServiceImpl(antecedentRepoFactory);
 
+        var dentService = new DentServiceImpl(dentRepoFactory);
+
         var agendaMensuelService = new AgendaMensuelServiceImpl(
                 agendaMensuelRepoFactory,
                 utilisateurRepositoryFactory
@@ -329,6 +336,7 @@ public final class ApplicationContext {
         context.put(ActeMedicalService.class, acteService);
         context.put(NotificationService.class, notificationService);
         context.put(AntecedentService.class, antecedentService);
+        context.put(DentService.class, dentService);
         context.put(AgendaMensuelService.class, agendaMensuelService);
         context.put(RendezVousService.class, rendezVousService);
         context.put(MedicamentService.class, medicamentService);

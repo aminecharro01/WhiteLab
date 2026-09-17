@@ -20,7 +20,7 @@ public class PrescriptionDetailPanel extends JPanel {
 
         JLabel title = new JLabel("Prescriptions pour l'ordonnance du " + (ordonnance.getDateOrdonnance() != null ? ordonnance.getDateOrdonnance().toString() : "-"));
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        title.setForeground(new Color(64, 120, 255));
+        title.setForeground(new Color(0x0E, 0xA5, 0xA5));
         add(title, BorderLayout.NORTH);
 
         String[] columns = {"Médicament", "Quantité", "Fréquence", "Durée (jours)", "Prix Unitaire", "Prix Total"};
@@ -31,7 +31,7 @@ public class PrescriptionDetailPanel extends JPanel {
         prescriptionsTable.setRowHeight(40);
         prescriptionsTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         prescriptionsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        prescriptionsTable.getTableHeader().setBackground(new Color(64, 120, 255));
+        prescriptionsTable.getTableHeader().setBackground(new Color(0x0E, 0xA5, 0xA5));
         prescriptionsTable.getTableHeader().setForeground(Color.WHITE);
 
         add(new JScrollPane(prescriptionsTable), BorderLayout.CENTER);

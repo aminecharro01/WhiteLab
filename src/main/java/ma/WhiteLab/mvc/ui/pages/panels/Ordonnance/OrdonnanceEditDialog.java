@@ -18,7 +18,7 @@ import java.util.List;
 public class OrdonnanceEditDialog extends JDialog {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Color ACCENT = new Color(40, 167, 69);
     private static final Color WARNING = new Color(220, 53, 69);
 

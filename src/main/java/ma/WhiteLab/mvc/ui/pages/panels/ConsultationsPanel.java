@@ -50,7 +50,7 @@ public class ConsultationsPanel extends JPanel implements DossierDetailPanel.Ref
 
         JLabel title = new JLabel("Consultations");
         title.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        title.setForeground(new Color(64, 120, 255));
+        title.setForeground(new Color(0x0E, 0xA5, 0xA5));
 
         JButton addBtn = new JButton("Ajouter");
         addBtn.addActionListener(e -> addConsultation());
@@ -77,7 +77,8 @@ public class ConsultationsPanel extends JPanel implements DossierDetailPanel.Ref
 
         table = new JTable(model);
         table.setRowHeight(40);
-        table.getColumnModel().getColumn(3).setCellRenderer(new ActionsColumnRenderer());
+        ActionsColumnRenderer actionsRenderer = new ActionsColumnRenderer();
+        table.getColumnModel().getColumn(3).setCellRenderer(actionsRenderer);
         table.getColumnModel().getColumn(3).setPreferredWidth(120);
         table.getColumnModel().getColumn(2).setPreferredWidth(250);
 
@@ -89,18 +90,21 @@ public class ConsultationsPanel extends JPanel implements DossierDetailPanel.Ref
                 if (row >= 0 && col == 3) {
                     Object value = model.getValueAt(row, col);
                     if (!(value instanceof ConsultationDTO)) return;
-                    
-                    ConsultationDTO consultation = (ConsultationDTO) value;
-                    
-                    Rectangle cellRect = table.getCellRect(row, col, true);
-                    int relX = e.getPoint().x - cellRect.x;
-                    int buttonWidth = cellRect.width / 3;
 
-                    if (relX < buttonWidth) {
+                    ConsultationDTO consultation = (ConsultationDTO) value;
+
+                    Rectangle cellRect = table.getCellRect(row, col, true);
+                    actionsRenderer.setSize(cellRect.width, cellRect.height);
+                    actionsRenderer.doLayout();
+                    int relX = e.getPoint().x - cellRect.x;
+                    int relY = e.getPoint().y - cellRect.y;
+                    Component clicked = actionsRenderer.getComponentAt(relX, relY);
+
+                    if (clicked == actionsRenderer.btnOpen) {
                         openConsultation(consultation);
-                    } else if (relX < buttonWidth * 2) {
+                    } else if (clicked == actionsRenderer.btnEdit) {
                         editConsultation(consultation);
-                    } else {
+                    } else if (clicked == actionsRenderer.btnDelete) {
                         deleteConsultation(consultation, row);
                     }
                 }

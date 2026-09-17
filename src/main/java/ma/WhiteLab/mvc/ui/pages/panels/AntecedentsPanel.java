@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AntecedentsPanel extends JPanel {
 
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Color SUCCESS = new Color(40, 167, 69);
     private static final Color DANGER = new Color(220, 53, 69);
     private static final Color LIGHT_GRAY = new Color(245, 247, 250);
@@ -97,7 +97,8 @@ public class AntecedentsPanel extends JPanel {
         cm.getColumn(3).setPreferredWidth(250);
         cm.getColumn(4).setPreferredWidth(180);
 
-        cm.getColumn(4).setCellRenderer(new ActionsColumnRenderer());
+        ActionsColumnRenderer actionsRenderer = new ActionsColumnRenderer();
+        cm.getColumn(4).setCellRenderer(actionsRenderer);
 
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -111,11 +112,15 @@ public class AntecedentsPanel extends JPanel {
                 if (!(hidden instanceof AntecedentDTO dto)) return;
 
                 Rectangle cellRect = table.getCellRect(row, col, true);
+                actionsRenderer.setSize(cellRect.width, cellRect.height);
+                actionsRenderer.doLayout();
                 int relX = e.getPoint().x - cellRect.x;
+                int relY = e.getPoint().y - cellRect.y;
+                Component clicked = actionsRenderer.getComponentAt(relX, relY);
 
-                if (relX >= 10 && relX <= 50) {
+                if (clicked == actionsRenderer.btnView) {
                     showDetails(dto);
-                } else if (relX >= 110 && relX <= 150) {  // Seulement voir + supprimer
+                } else if (clicked == actionsRenderer.btnDelete) {
                     deleteAntecedent(dto, modelRow);
                 }
             }

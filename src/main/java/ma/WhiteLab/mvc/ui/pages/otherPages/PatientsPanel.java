@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class PatientsPanel extends JPanel {
 
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Color SUCCESS = new Color(40, 167, 69);
     private static final Color DANGER = new Color(220, 53, 69);
     private static final Color LIGHT_GRAY = new Color(245, 247, 250);
@@ -138,7 +138,8 @@ public class PatientsPanel extends JPanel {
         cm.getColumn(6).setCellRenderer(center);
 
         // Renderer spécial pour la colonne Actions
-        cm.getColumn(7).setCellRenderer(new ActionsColumnRenderer());
+        ActionsColumnRenderer actionsRenderer = new ActionsColumnRenderer();
+        cm.getColumn(7).setCellRenderer(actionsRenderer);
 
         // Gestion des clics sur la colonne Actions
         table.addMouseListener(new MouseAdapter() {
@@ -153,20 +154,29 @@ public class PatientsPanel extends JPanel {
                     int modelRow = table.convertRowIndexToModel(row);
                     Long patientId = (Long) tableModel.getValueAt(modelRow, 0);
 
+                    // Reproduit exactement le layout du renderer pour cette cellule,
+                    // puis détermine sur quel bouton le clic est réellement tombé
+                    // (évite de deviner des plages de pixels qui se désynchronisent
+                    // du rendu réel dès que la taille/marge d'un bouton change).
+                    Rectangle cellRect = table.getCellRect(row, column, true);
+                    actionsRenderer.setSize(cellRect.width, cellRect.height);
+                    actionsRenderer.doLayout();
+
                     Point p = e.getPoint();
-                    int cellX = table.getCellRect(row, column, true).x;
-                    int relX = p.x - cellX;
+                    int relX = p.x - cellRect.x;
+                    int relY = p.y - cellRect.y;
+                    Component clicked = actionsRenderer.getComponentAt(relX, relY);
 
                     // 1. Voir le dossier
-                    if (relX >= 10 && relX <= 50) {
+                    if (clicked == actionsRenderer.btnView) {
                         controller.openPatientDossier(patientId, principal);
                     }
                     // 2. Modifier le patient
-                    else if (relX >= 60 && relX <= 100) {
+                    else if (clicked == actionsRenderer.btnEdit) {
                         controller.openEditPatient(patientId, principal);
                     }
                     // 3. Supprimer patient + dossier
-                    else if (relX >= 110 && relX <= 150) {
+                    else if (clicked == actionsRenderer.btnDelete) {
                         int choice = JOptionPane.showConfirmDialog(
                                 PatientsPanel.this,
                                 "Cette action va supprimer définitivement :\n" +

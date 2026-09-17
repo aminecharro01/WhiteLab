@@ -146,6 +146,23 @@ CREATE TABLE IF NOT EXISTS Patient_Antecedent (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
+-- Table Dent (odontogramme — 1 ligne par dent renseignée)
+-- =========================
+CREATE TABLE IF NOT EXISTS Dent (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    patient_id BIGINT NOT NULL,
+    numero INT NOT NULL,
+    etat VARCHAR(20) NOT NULL DEFAULT 'SAIN',
+    note VARCHAR(255),
+    dateCreation DATETIME DEFAULT CURRENT_TIMESTAMP,
+    dateMiseAJour DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creePar VARCHAR(255),
+    modifierPar VARCHAR(255),
+    UNIQUE KEY uq_patient_dent (patient_id, numero),
+    CONSTRAINT fk_dent_patient FOREIGN KEY (patient_id) REFERENCES Patient(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
 -- Table Consultation
 -- =========================
 CREATE TABLE IF NOT EXISTS Consultation (

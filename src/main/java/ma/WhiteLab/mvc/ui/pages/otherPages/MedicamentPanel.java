@@ -29,7 +29,7 @@ public class MedicamentPanel extends JPanel {
         // Titre
         JLabel title = new JLabel("Gestion des Médicaments", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        title.setForeground(new Color(64, 120, 255));
+        title.setForeground(new Color(0x0E, 0xA5, 0xA5));
         add(title, BorderLayout.NORTH);
 
         // Tableau
@@ -44,7 +44,7 @@ public class MedicamentPanel extends JPanel {
         table.setRowHeight(35);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        table.getTableHeader().setBackground(new Color(64, 120, 255));
+        table.getTableHeader().setBackground(new Color(0x0E, 0xA5, 0xA5));
         table.getTableHeader().setForeground(Color.WHITE);
 
         // Largeurs colonnes

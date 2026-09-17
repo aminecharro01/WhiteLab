@@ -40,7 +40,7 @@ public class AgendaEditDialog extends JDialog {
         // Title
         JLabel titleLabel = new JLabel("Définir les jours non travaillés", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        titleLabel.setForeground(new Color(64, 120, 255));
+        titleLabel.setForeground(new Color(0x0E, 0xA5, 0xA5));
         add(titleLabel, BorderLayout.NORTH);
 
         // Checkboxes for days of the week

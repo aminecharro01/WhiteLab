@@ -1,6 +1,7 @@
 package ma.WhiteLab.mvc.ui.frames;
 
 import ma.WhiteLab.mvc.controllers.modules.auth.api.AuthController;
+import ma.WhiteLab.mvc.ui.palette.utils.AppTheme;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -151,7 +152,7 @@ public class AuthView extends JFrame {
         } else {
             logo.setText("WhiteLab");
             logo.setFont(new Font("Segoe UI", Font.BOLD, 42));
-            logo.setForeground(new Color(64, 120, 255));
+            logo.setForeground(AppTheme.PRIMARY);
         }
         logo.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -175,7 +176,7 @@ public class AuthView extends JFrame {
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBorder(new EmptyBorder(20, 0, 0, 0));
 
-        JPanel rowEmail = createInputRow("/static/icons/user.png", "Email ou login");
+        JPanel rowEmail = createInputRow("ikon:USER", "Email ou login");
         emailField = (JTextField) rowEmail.getComponent(1);
         center.add(rowEmail);
         center.add(Box.createVerticalStrut(8));
@@ -183,7 +184,7 @@ public class AuthView extends JFrame {
         center.add(lblErrorEmail);
         center.add(Box.createVerticalStrut(20));
 
-        JPanel rowPass = createInputRow("/static/icons/pass.png", "Mot de passe");
+        JPanel rowPass = createInputRow("ikon:LOCK", "Mot de passe");
         passwordField = (JPasswordField) rowPass.getComponent(1);
         center.add(rowPass);
         center.add(Box.createVerticalStrut(8));
@@ -234,10 +235,10 @@ public class AuthView extends JFrame {
     }
 
     private JPanel buildFooterButtons() {
-        btnLogin = createStyledButton("connecter", "/static/icons/enter.png", new Color(30, 41, 59)); // Dark
+        btnLogin = createStyledButton("connecter", "ikon:SIGN_IN_ALT", AppTheme.PRIMARY);
         btnLogin.addActionListener(this::onLoginAction);
 
-        btnForgot = createStyledButton("Mot de passe oublié", "/static/icons/lock.png", new Color(99, 102, 241)); // Indigo
+        btnForgot = createStyledButton("Mot de passe oublié", "ikon:LOCK", AppTheme.TEXT_SECONDARY);
         btnForgot.addActionListener(this::onForgotAction);
 
 
@@ -252,7 +253,9 @@ public class AuthView extends JFrame {
 
     private JButton createStyledButton(String text, String iconPath, Color bgColor) {
         JButton btn = new JButton(text);
-        ImageIcon icon = loadIcon(iconPath, 32, 32);
+        ImageIcon icon = iconPath.startsWith("ikon:")
+                ? ma.WhiteLab.mvc.ui.palette.utils.ImageTools.loadIkon(iconPath.substring(5), 24, Color.WHITE)
+                : loadIcon(iconPath, 32, 32);
         if (icon != null) {
             btn.setIcon(icon);
             btn.setIconTextGap(12);
@@ -280,6 +283,9 @@ public class AuthView extends JFrame {
     }
 
     private ImageIcon loadIcon(String path, int width, int height) {
+        if (path != null && path.startsWith("ikon:")) {
+            return ma.WhiteLab.mvc.ui.palette.utils.ImageTools.loadIcon(path, width, height);
+        }
         URL url = getClass().getResource(path);
         if (url != null) {
             ImageIcon original = new ImageIcon(url);

@@ -192,7 +192,7 @@ public class RolesPanel extends JPanel {
 
         // Save Button
         JButton btnSave = new JButton("Enregistrer");
-        btnSave.setBackground(new Color(64, 120, 255));
+        btnSave.setBackground(new Color(0x0E, 0xA5, 0xA5));
         btnSave.setForeground(Color.WHITE);
         btnSave.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnSave.addActionListener(e -> saveRole(isNew, (RoleR) cbRole.getSelectedItem()));

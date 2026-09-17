@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 public class DossierDetailPanel extends JPanel {
 
     // --- UI Constants ---
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Font TAB_FONT = new Font("Segoe UI", Font.BOLD, 14);
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -125,6 +125,8 @@ public class DossierDetailPanel extends JPanel {
         JTabbedPane tabs = new JTabbedPane();
         tabs.setFont(TAB_FONT);
 
+        tabs.addTab("Odontogramme",
+                new OdontogramPanel(dossier.getPat().getId(), isReadOnly));
         tabs.addTab("Rendez-vous",
                 new RendezVousPanel(dossier, rendezVousService, consultationService));
         tabs.addTab("Antécédents",

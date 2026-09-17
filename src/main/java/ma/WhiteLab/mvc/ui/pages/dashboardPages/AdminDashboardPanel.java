@@ -55,7 +55,7 @@ public class AdminDashboardPanel extends JPanel {
 
         JButton statsBtn = new JButton("Voir Stats Avancées");
         statsBtn.setFont(new Font("Optima", Font.BOLD, 14));
-        statsBtn.setBackground(new Color(64, 120, 255));
+        statsBtn.setBackground(new Color(0x0E, 0xA5, 0xA5));
         statsBtn.setForeground(Color.WHITE);
         statsBtn.setFocusPainted(false);
         statsBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

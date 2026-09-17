@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 
 public class AgendaMensuelPanel extends JPanel {
 
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Color SUCCESS = new Color(40, 167, 69);
     private static final Color DANGER = new Color(220, 53, 69);
     private static final Color LIGHT_BG = new Color(245, 247, 250);

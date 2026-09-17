@@ -23,7 +23,7 @@ import java.util.List;
 public class OrdonnancesPanel extends JPanel {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
     private static final Color SUCCESS = new Color(40, 167, 69);
     private static final Color DANGER = new Color(220, 53, 69);
     private static final Color LIGHT_GRAY = new Color(245, 247, 250);
@@ -103,7 +103,8 @@ public class OrdonnancesPanel extends JPanel {
         cm.getColumn(1).setPreferredWidth(300);
         cm.getColumn(2).setPreferredWidth(180);
 
-        cm.getColumn(2).setCellRenderer(new ActionsColumnRenderer());
+        ActionsColumnRenderer actionsRenderer = new ActionsColumnRenderer();
+        cm.getColumn(2).setCellRenderer(actionsRenderer);
 
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -117,14 +118,15 @@ public class OrdonnancesPanel extends JPanel {
                 if (!(hidden instanceof Ordonnance ordonnance)) return;
 
                 Rectangle cellRect = table.getCellRect(row, col, true);
+                actionsRenderer.setSize(cellRect.width, cellRect.height);
+                actionsRenderer.doLayout();
                 int relX = e.getPoint().x - cellRect.x;
+                int relY = e.getPoint().y - cellRect.y;
+                Component clicked = actionsRenderer.getComponentAt(relX, relY);
 
-                // Zone "Voir détails" (œil) → gauche
-                if (relX >= 10 && relX <= 60) {
+                if (clicked == actionsRenderer.btnView) {
                     showOrdonnanceDetails(ordonnance);
-                }
-                // Zone "Supprimer" (poubelle) → droite
-                else if (relX >= 80 && relX <= 140) {
+                } else if (clicked == actionsRenderer.btnDelete) {
                     deleteOrdonnance(ordonnance, modelRow);
                 }
             }

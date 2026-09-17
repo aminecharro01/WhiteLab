@@ -143,7 +143,7 @@ public class CaissePanel extends JPanel {
 
         JButton btnSF = new JButton("Gérer Situations Financières");
         btnSF.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnSF.setBackground(new Color(64, 120, 255));
+        btnSF.setBackground(new Color(0x0E, 0xA5, 0xA5));
         btnSF.setForeground(Color.WHITE);
         btnSF.setFocusPainted(false);
         btnSF.addActionListener(e -> openSFPanel());

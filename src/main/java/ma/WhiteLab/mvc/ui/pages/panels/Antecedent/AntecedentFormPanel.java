@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class AntecedentFormPanel extends JPanel {
 
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
 
     private final AntecedentService antecedentService;
     private final PatientService patientService;

@@ -245,6 +245,18 @@ public final class RowMappers {
 
 
     // ============================================================
+    //  DENT (odontogramme)
+    // ============================================================
+    public static Dent mapDent(ResultSet rs) throws SQLException {
+        Dent d = mapBaseEntity(rs, new Dent());
+        d.setPatientId(rs.getLong("patient_id"));
+        d.setNumero(rs.getInt("numero"));
+        d.setEtat(mapEnum(rs, "etat", EtatDent.class));
+        d.setNote(getStringOrNull(rs, "note"));
+        return d;
+    }
+
+    // ============================================================
     //  ANTECEDENT
     // ============================================================
     public static Antecedent mapAntecedent(ResultSet rs) throws SQLException {

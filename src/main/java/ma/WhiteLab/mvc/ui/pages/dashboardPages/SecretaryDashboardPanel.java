@@ -4,6 +4,7 @@ import ma.WhiteLab.conf.ApplicationContext;
 import ma.WhiteLab.mvc.dto.auth.UserPrincipal;
 import ma.WhiteLab.mvc.dto.profileDtos.ProfileData;
 import ma.WhiteLab.mvc.ui.pages.pagesNames.ApplicationPages;
+import ma.WhiteLab.mvc.ui.palette.charts.SimpleChart;
 import ma.WhiteLab.service.modules.dashboard_statistiques.api.DashboardService;
 import ma.WhiteLab.service.modules.dashboard_statistiques.dto.DashboardDataDTO;
 import ma.WhiteLab.service.modules.dashboard_statistiques.dto.RendezVousDTO;
@@ -13,7 +14,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class SecretaryDashboardPanel extends JPanel {
@@ -52,7 +55,7 @@ public class SecretaryDashboardPanel extends JPanel {
         
         JButton statsBtn = new JButton("Stats Caisse & RDV");
         statsBtn.setFont(new Font("Optima", Font.BOLD, 14));
-        statsBtn.setBackground(new Color(64, 120, 255));
+        statsBtn.setBackground(new Color(0x0E, 0xA5, 0xA5));
         statsBtn.setForeground(Color.WHITE);
         statsBtn.setFocusPainted(false);
         statsBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -108,12 +111,26 @@ public class SecretaryDashboardPanel extends JPanel {
         cardsPanel.repaint();
 
         listPanel.removeAll();
+        listPanel.setLayout(new GridLayout(1, 2, 20, 0));
+
+        Map<String, Double> parStatut = new LinkedHashMap<>();
+        for (RendezVousDTO r : data.getRendezVousDuJour()) {
+            String statut = r.getStatus() != null ? r.getStatus().toString() : "Inconnu";
+            parStatut.merge(statut, 1.0, Double::sum);
+        }
+        SimpleChart chart = new SimpleChart("RDV du Jour par Statut", SimpleChart.Type.PIE);
+        chart.setData(parStatut);
+        listPanel.add(chart);
+
+        JPanel tableWrap = new JPanel(new BorderLayout());
+        tableWrap.setOpaque(false);
         JLabel header = new JLabel("Agenda Aujourd'hui");
         header.setFont(new Font("Optima", Font.BOLD, 18));
         header.setBorder(new EmptyBorder(0,0,10,0));
-        listPanel.add(header, BorderLayout.NORTH);
-        
-        listPanel.add(buildTable(data.getRendezVousDuJour()), BorderLayout.CENTER);
+        tableWrap.add(header, BorderLayout.NORTH);
+        tableWrap.add(buildTable(data.getRendezVousDuJour()), BorderLayout.CENTER);
+        listPanel.add(tableWrap);
+
         listPanel.revalidate();
         listPanel.repaint();
     }

@@ -100,7 +100,7 @@ public class CertificatDialog extends JDialog {
 
         btnCancel.setPreferredSize(new Dimension(110, 38));
         btnSave.setPreferredSize(new Dimension(110, 38));
-        btnSave.setBackground(new Color(64, 120, 255));
+        btnSave.setBackground(new Color(0x0E, 0xA5, 0xA5));
         btnSave.setForeground(Color.WHITE);
         btnSave.setFocusPainted(false);
 

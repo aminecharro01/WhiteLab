@@ -18,7 +18,7 @@ import java.net.URL;
 public final class UIFactory {
 
     // --- Colors ---
-    public static final Color PRIMARY_COLOR = new Color(64, 120, 255);
+    public static final Color PRIMARY_COLOR = new Color(0x0E, 0xA5, 0xA5);
     public static final Color PRIMARY_DARKER = new Color(50, 95, 204);
     public static final Color SUCCESS_COLOR = new Color(40, 167, 69);
     public static final Color DANGER_COLOR = new Color(220, 53, 69);

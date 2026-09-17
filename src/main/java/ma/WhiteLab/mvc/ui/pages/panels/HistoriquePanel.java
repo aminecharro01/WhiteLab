@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class HistoriquePanel extends JPanel {
 
-    private static final Color PRIMARY = new Color(64, 120, 255);
+    private static final Color PRIMARY = new Color(0x0E, 0xA5, 0xA5);
 
     public HistoriquePanel(DossierMedical dossier, DossierMedicalService service, UserPrincipal principal) {
         setLayout(new BorderLayout());

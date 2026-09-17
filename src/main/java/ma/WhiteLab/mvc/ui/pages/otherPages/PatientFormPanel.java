@@ -67,7 +67,7 @@ public class PatientFormPanel extends JPanel {
                 : "Modifier le patient");
 
         title.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        title.setForeground(new Color(64, 120, 255));
+        title.setForeground(new Color(0x0E, 0xA5, 0xA5));
 
         header.add(title, BorderLayout.WEST);
         return header;
@@ -136,7 +136,7 @@ public class PatientFormPanel extends JPanel {
         footer.setBackground(Color.WHITE);
 
         JButton cancelBtn = createButton("Annuler", new Color(120, 120, 120));
-        JButton saveBtn = createButton("Enregistrer", new Color(64, 120, 255));
+        JButton saveBtn = createButton("Enregistrer", new Color(0x0E, 0xA5, 0xA5));
 
         cancelBtn.addActionListener(e -> controller.refresh());
         saveBtn.addActionListener(e -> save());
