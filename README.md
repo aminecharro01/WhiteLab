@@ -1,3 +1,5 @@
+![WhiteLab preview](docs/mockup.jpg)
+
 # WhiteLab - Système de Gestion de Cabinet Médical
 
 WhiteLab est une application de bureau complète développée en Java pour faciliter la gestion quotidienne d'un cabinet médical. Elle offre une interface moderne et intuitive pour gérer les patients, les dossiers médicaux, les rendez-vous et l'administration du cabinet.
